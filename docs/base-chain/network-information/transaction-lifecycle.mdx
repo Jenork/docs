@@ -1,0 +1,30 @@
+---
+title: Transaction Lifecycle
+description: Follow a Base transaction from submission through sequencing, preconfirmation, L2 inclusion, L1 batching, and finality.
+---
+
+This page maps the main stages of a Base transaction to the canonical docs for each topic.
+
+## Lifecycle stages
+
+<CardGroup cols={2}>
+  <Card title="1. Submit and price" icon="paper-plane" href="/base-chain/network-information/network-fees">
+    Learn how L2 execution fees, L1 data fees, and minimum base fee settings affect transactions.
+  </Card>
+  <Card title="2. Sequence and build" icon="blocks" href="/base-chain/network-information/block-building">
+    Understand how the sequencer orders transactions, builds Flashblocks, and enforces gas limits.
+  </Card>
+  <Card title="3. Read preconfirmed state" icon="bolt" href="/base-chain/api-reference/rpc-overview#flashblocks-behavior-matrix">
+    Use the API reference for Standard and Flashblocks endpoint behavior.
+  </Card>
+  <Card title="4. Confirm and finalize" icon="shield-check" href="/base-chain/network-information/transaction-finality">
+    Compare preconfirmation, L2 block inclusion, L1 batch inclusion, L1 finality, and withdrawal finality.
+  </Card>
+</CardGroup>
+
+## Operational paths
+
+- [Troubleshooting Transactions](/base-chain/network-information/troubleshooting-transactions) covers pending transactions, nonce gaps, rejected transactions, failed execution, and slow confirmation.
+- [Sequencing Policy](/base-chain/network-information/sequencing-policy) collects ordering and inclusion policy destinations.
+- [Throughput and Limits](/base-chain/network-information/throughput-and-limits) collects gas, block capacity, and endpoint limit destinations.
+- [Protocol Overview](/base-chain/specs/protocol/overview) explains protocol roles and user flows at the specification layer.

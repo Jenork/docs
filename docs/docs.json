@@ -83,7 +83,7 @@
             },
             {
               "anchor": "Bridge",
-              "href": "https://docs.base.org/base-chain/network-information/bridges-mainnet",
+              "href": "https://docs.base.org/base-chain/network-information/bridges",
               "icon": "coin"
             },
             {
@@ -98,35 +98,42 @@
         "tab": "Chain",
         "groups": [
           {
+            "group": "Overview",
+            "pages": [
+              "base-chain/overview",
+              "base-chain/network-information/networks-and-endpoints",
+              "base-chain/network-information/specs-vs-network-reference"
+            ]
+          },
+          {
             "group": "Quickstart",
             "pages": [
-              "base-chain/quickstart/why-base",
               "base-chain/quickstart/deploy-on-base",
               "base-chain/quickstart/connecting-to-base",
               "base-chain/quickstart/base-solana-bridge"
             ]
           },
           {
-            "group": "Network Information",
+            "group": "Concepts",
             "pages": [
-              "base-chain/network-information/base-contracts",
-              "base-chain/network-information/ecosystem-contracts",
-              "base-chain/network-information/network-fees",
+              "base-chain/network-information/transaction-lifecycle",
               "base-chain/network-information/block-building",
               "base-chain/network-information/transaction-finality",
-              "base-chain/network-information/diffs-ethereum-base",
-              "base-chain/network-information/troubleshooting-transactions",
-              "base-chain/network-information/configuration-changelog",
-              "base-chain/network-information/network-faucets"
+              "base-chain/network-information/throughput-and-limits",
+              "base-chain/network-information/sequencing-policy",
+              "base-chain/network-information/network-fees",
+              "base-chain/network-information/diffs-ethereum-base"
             ]
           },
           {
-            "group": "Flashblocks",
+            "group": "Network Reference",
             "pages": [
-              "base-chain/flashblocks/overview",
-              "base-chain/flashblocks/app-integration",
-              "base-chain/flashblocks/architecture",
-              "base-chain/flashblocks/faq"
+              "base-chain/network-information/base-contracts",
+              "base-chain/network-information/ecosystem-contracts",
+              "base-chain/network-information/bridges",
+              "base-chain/network-information/network-faucets",
+              "base-chain/network-information/configuration-changelog",
+              "base-chain/network-information/troubleshooting-transactions"
             ]
           },
           {
@@ -759,8 +766,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Base Build",
-      "href": "https://base.dev"
+      "label": "Base Dashboard",
+      "href": "https://dashboard.base.org"
     }
   },
   "footer": {
@@ -823,6 +830,22 @@
     {
       "source": "/base-chain/flashblocks/api-reference#endpoints",
       "destination": "/base-chain/api-reference/rpc-overview#endpoints"
+    },
+    {
+      "source": "/base-chain/flashblocks/overview",
+      "destination": "/base-chain/network-information/block-building#flashblocks"
+    },
+    {
+      "source": "/base-chain/flashblocks/app-integration",
+      "destination": "/base-chain/api-reference/rpc-overview#flashblocks-behavior-matrix"
+    },
+    {
+      "source": "/base-chain/flashblocks/architecture",
+      "destination": "/base-chain/node-operators/run-a-base-node#enable-flashblocks"
+    },
+    {
+      "source": "/base-chain/flashblocks/faq",
+      "destination": "/base-chain/network-information/transaction-lifecycle"
     },
     {
       "source": "/ai-agents/reference/contracts",
@@ -1790,11 +1813,11 @@
     },
     {
       "source": "/mini-apps/growth/data-driven-growth",
-      "destination": "https://base.dev"
+      "destination": "https://dashboard.base.org"
     },
     {
       "source": "/mini-apps/technical-guides/data-driven-growth",
-      "destination": "https://base.dev"
+      "destination": "https://dashboard.base.org"
     },
     {
       "source": "/mini-apps/features/links",
@@ -2014,11 +2037,11 @@
     },
     {
       "source": "/chain/bridges-mainnet",
-      "destination": "/base-chain/network-information/bridges-mainnet"
+      "destination": "/base-chain/network-information/bridges"
     },
     {
       "source": "/chain/builder-anniversary-nft",
-      "destination": "/base-chain/quickstart/why-base"
+      "destination": "/base-chain/quickstart/deploy-on-base"
     },
     {
       "source": "/chain/connecting-to-base",
@@ -2038,7 +2061,7 @@
     },
     {
       "source": "/chain/decentralizing-base-with-optimism",
-      "destination": "/base-chain/quickstart/why-base"
+      "destination": "/base-chain/quickstart/deploy-on-base"
     },
     {
       "source": "/chain/deploy-on-base-quickstart",
@@ -2054,15 +2077,15 @@
     },
     {
       "source": "/chain/flashblocks",
-      "destination": "/base-chain/flashblocks/app-integration"
+      "destination": "/base-chain/network-information/block-building#flashblocks"
     },
     {
       "source": "/chain/flashblocks/apps",
-      "destination": "/base-chain/flashblocks/app-integration"
+      "destination": "/base-chain/api-reference/rpc-overview#flashblocks-behavior-matrix"
     },
     {
       "source": "/base-chain/flashblocks/apps",
-      "destination": "/base-chain/flashblocks/app-integration"
+      "destination": "/base-chain/api-reference/rpc-overview#flashblocks-behavior-matrix"
     },
     {
       "source": "/chain/flashblocks/node-providers",
@@ -2142,7 +2165,11 @@
     },
     {
       "source": "/chain/why-base",
-      "destination": "/base-chain/quickstart/why-base"
+      "destination": "/base-chain/quickstart/deploy-on-base"
+    },
+    {
+      "source": "/base-chain/quickstart/why-base",
+      "destination": "/base-chain/quickstart/deploy-on-base"
     },
     {
       "source": "/cookbook/growth/cast-actions",

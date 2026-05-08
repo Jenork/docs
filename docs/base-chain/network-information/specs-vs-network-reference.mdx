@@ -1,0 +1,27 @@
+---
+title: Specs vs Network Reference
+description: Understand when to use Base Chain protocol specifications, network reference pages, and API reference pages.
+---
+
+Base Chain docs separate protocol rules from live network configuration and API method reference.
+
+## Use Protocol Specifications for protocol rules
+
+[Protocol Specifications](/base-chain/specs/overview) are the cohesive, end-to-end description of the Base Chain protocol. Use them when you need to understand protocol design, execution behavior, derivation, bridging, fault proofs, upgrades, BCPs, or terminology.
+
+Protocol specifications should remain readable as a connected document set. Network-specific operating values and app integration notes should link out to network reference or API reference pages when they would interrupt that flow.
+
+## Use Network Reference for live configuration
+
+Network reference pages describe how Base Mainnet and Base Sepolia are configured and operated today. Use them for:
+
+- [Networks and endpoints](/base-chain/network-information/networks-and-endpoints)
+- [Contract addresses](/base-chain/network-information/base-contracts)
+- [Block building](/base-chain/network-information/block-building)
+- [Throughput and limits](/base-chain/network-information/throughput-and-limits)
+- [Network fees](/base-chain/network-information/network-fees)
+- [Configuration changelog](/base-chain/network-information/configuration-changelog)
+
+## Use API Reference for method behavior
+
+[API Reference](/base-chain/api-reference/rpc-overview) is separate from protocol specifications. Use it for JSON-RPC methods, Flashblocks API methods, WebSocket subscriptions, debug APIs, request examples, response shapes, and endpoint-specific behavior.

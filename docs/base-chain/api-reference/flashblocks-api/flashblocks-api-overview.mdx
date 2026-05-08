@@ -35,6 +35,10 @@ The raw Flashblocks infrastructure stream is the upstream WebSocket feed consume
 **Applications should not connect directly to the infrastructure stream.** These endpoints are for node operators only. App developers should use the [WebSocket subscription methods](#websocket-subscriptions) above via a Flashblocks-aware RPC provider.
 </Warning>
 
+<Note>
+Azul simplifies the raw Flashblocks WebSocket payload. Account balances and receipts are not populated in the raw stream after Azul. Applications that need preconfirmed transaction or receipt data should use Flashblocks RPC behavior described in the [RPC Overview](/base-chain/api-reference/rpc-overview#flashblocks-behavior-matrix).
+</Note>
+
 | Network | Raw stream URL |
 | :--- | :--- |
 | Mainnet | `wss://mainnet.flashblocks.base.org/ws` |
@@ -50,7 +54,7 @@ Unique identifier for the block being built. Remains consistent across all Flash
 </ParamField>
 
 <ParamField path="index" type="number">
-Flashblock index within the current block. Starts at 0 (system transactions only). User transactions begin at index 1. Typically reaches 9–10 per block, but [may exceed 10](/base-chain/flashblocks/faq#why-can-the-flashblock-index-exceed-10) during sequencer timing drift.
+Flashblock index within the current block. Starts at 0 (system transactions only). User transactions begin at index 1. Typically reaches 9-10 per block, but can exceed 10 during sequencer timing drift. Do not hardcode a final index; use `payload_id` changes or full block confirmation via standard RPC as the signal that the block has advanced.
 </ParamField>
 
 <ParamField path="base" type="Base Object">

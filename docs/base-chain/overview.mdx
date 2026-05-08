@@ -1,0 +1,49 @@
+---
+title: Chain Overview
+description: Start here for Base Chain docs, including network configuration, transaction lifecycle, APIs, protocol specifications, and node operations.
+---
+
+Base is an Ethereum L2. These docs are organized around the jobs builders and operators need to do on the chain.
+
+## Start here
+
+<CardGroup cols={2}>
+  <Card title="Networks and endpoints" icon="globe" href="/base-chain/network-information/networks-and-endpoints">
+    Find Base Mainnet and Base Sepolia chain IDs, RPC URLs, WebSocket URLs, Flashblocks endpoints, and explorers.
+  </Card>
+  <Card title="Deploy on Base" icon="rocket" href="/base-chain/quickstart/deploy-on-base">
+    Set up a development environment and deploy a smart contract to Base.
+  </Card>
+  <Card title="Transaction lifecycle" icon="route" href="/base-chain/network-information/transaction-lifecycle">
+    Follow a transaction from submission through preconfirmation, L2 inclusion, L1 batching, and finality.
+  </Card>
+  <Card title="Run a Base node" icon="server" href="/base-chain/node-operators/run-a-base-node">
+    Operate Base infrastructure, including Flashblocks-aware RPC nodes.
+  </Card>
+</CardGroup>
+
+## Reference areas
+
+<CardGroup cols={2}>
+  <Card title="Network concepts" icon="diagram-project" href="/base-chain/network-information/block-building">
+    Learn how Base blocks are built, how transactions are ordered, and how network limits are configured.
+  </Card>
+  <Card title="Network reference" icon="list" href="/base-chain/network-information/base-contracts">
+    Look up current contract addresses, bridge options, faucets, and configuration history.
+  </Card>
+  <Card title="API Reference" icon="code" href="/base-chain/api-reference/rpc-overview">
+    Use Base JSON-RPC, Flashblocks API methods, subscriptions, and debug APIs.
+  </Card>
+  <Card title="Protocol Specifications" icon="book-open" href="/base-chain/specs/overview">
+    Read the cohesive Base Chain protocol specification, upgrades, BCPs, and protocol reference.
+  </Card>
+</CardGroup>
+
+## Where Flashblocks content lives
+
+Flashblocks is part of Base block production, transaction confirmation, RPC behavior, and node operation. Start with:
+
+- [Block Building](/base-chain/network-information/block-building#flashblocks) for sequencing and gas allocation.
+- [Transaction Finality](/base-chain/network-information/transaction-finality) for preconfirmation and finality stages.
+- [Base RPC Overview](/base-chain/api-reference/rpc-overview#flashblocks-behavior-matrix) for API behavior.
+- [Run a Base Node](/base-chain/node-operators/run-a-base-node#enable-flashblocks) for node operation.
