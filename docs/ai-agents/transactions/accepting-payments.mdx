@@ -1,7 +1,7 @@
 ---
 title: "Accepting Payments (x402)"
 description: "Gate your agent's endpoints with x402 to charge other agents per request"
-keywords: ["x402 server", "accept agent payments", "monetize API agent", "x402-express", "monetize-service skill", "OpenClaw x402 server"]
+keywords: ["x402 server", "accept agent payments", "monetize API agent", "x402-express", "monetize-service skill", "Base agent monetization"]
 ---
 
 import { AcceptingPaymentsDemo } from "/snippets/AcceptingPaymentsDemo.jsx"
@@ -12,7 +12,7 @@ You can build agent services that charge other agents for access using x402. Whe
 
 <AcceptingPaymentsDemo />
 
-## Option 1 — OpenClaw monetize-service skill (simplest)
+## Option 1 — `monetize-service` skill (simplest)
 
 With the CDP Agentic Wallet skills installed, expose a paid endpoint with a single prompt:
 
@@ -22,7 +22,7 @@ npx skills add coinbase/agentic-wallet-skills
 
 Then ask your agent:
 
-```text
+```text Prompt
 Set up a paid endpoint for my market data at $0.01 per request
 ```
 
@@ -30,32 +30,7 @@ The `monetize-service` skill configures the x402 gating and deploys the endpoint
 
 [CDP Agentic Wallet skills →](https://docs.cdp.coinbase.com/agentic-wallet/skills)
 
-## Option 2 — Sponge Wallet payment links
-
-Create a reusable x402 payment link that other agents pay before accessing your service:
-
-```bash Terminal
-curl -X POST "https://api.wallet.paysponge.com/api/payment-links" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Sponge-Version: 0.2.1" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "amount": "0.01",
-    "description": "Access to my market data API"
-  }'
-```
-
-Share the returned payment link URL with clients. Check payment status:
-
-```bash Terminal
-curl "https://api.wallet.paysponge.com/api/payment-links/{paymentLinkId}" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Sponge-Version: 0.2.1"
-```
-
-[Sponge Wallet docs →](https://wallet.paysponge.com/skill.md)
-
-## Option 3 — Custom server with x402-express
+## Option 2 — Custom server with `x402-express`
 
 Use the `x402-express` package to add payment gating to any Express endpoint:
 
@@ -91,6 +66,10 @@ app.listen(3000);
 The middleware returns `402` to unpaid callers. The CDP facilitator handles verification and onchain settlement.
 
 [x402 seller quickstart →](https://docs.cdp.coinbase.com/x402/docs/client-server-model)
+
+## Option 3 — `Hono` and other frameworks
+
+x402 ships middleware for `hono`, `next`, and `fastify` with the same configuration shape. See the [x402 server reference](https://docs.cdp.coinbase.com/x402/docs/client-server-model) for framework-specific examples.
 
 ## Configuring facilitators
 
@@ -136,7 +115,7 @@ Register your service in the ERC-8004 registry so agents can discover it by cate
 ## Related
 
 <CardGroup cols={2}>
-  <Card title="x402 protocol" icon="bolt" href="/ai-agents/payments/pay-for-services-with-x402">
+  <Card title="x402 protocol" icon="bolt" href="/ai-agents/transactions/pay-for-services-with-x402">
     How x402 works from the client side.
   </Card>
 

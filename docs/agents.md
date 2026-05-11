@@ -38,14 +38,14 @@ npx skills add base/base-skills
 
 [Docs]|root:./docs
 |ai-agents:index
-|ai-agents/payments:accepting-payments,pay-for-services-with-x402
 |ai-agents/quickstart:payments,trading
 |ai-agents/setup:agent-builder-codes,agent-registration,wallet-setup
 |ai-agents/skills:index
-|ai-agents/skills/payments:cdp-payment-skills,sponge-x402
-|ai-agents/skills/trading:alchemy-agentic-gateway,coingecko,swap-execution
-|ai-agents/skills/wallets:bankr,cdp-agentic-wallet,sponge-wallet
-|ai-agents/trading:data-fetching,trade-execution
+|ai-agents/skills/payments:cdp-payment-skills
+|ai-agents/skills/protocol-interactions:morpho,uniswap
+|ai-agents/skills/trading:alchemy-agentic-gateway,coingecko
+|ai-agents/skills/wallets:base-mcp,cdp-agentic-wallet
+|ai-agents/transactions:accepting-payments,pay-for-services-with-x402,protocol-interactions,send-swap
 |apps:index
 |apps/builder-codes:agent-developers,app-developers,builder-codes,wallet-developers
 |apps/growth:rewards

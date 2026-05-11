@@ -1,127 +1,123 @@
 ---
 title: "Get Started with Payments"
 description: "Build an agent that makes and accepts x402 payments on Base in under 10 minutes"
-keywords: ["x402 quickstart", "agent payments", "OpenClaw payments", "AI agent pay for API", "accept payments agent"]
+keywords: ["x402 quickstart", "agent payments", "Base MCP payments", "AI agent pay for API", "accept payments agent"]
 ---
 
 import { PaymentsQuickstartDemo } from "/snippets/PaymentsQuickstartDemo.jsx"
 
-This guide gets you from zero to a working agent that makes a paid x402 API request and exposes its own paid endpoint — all in under 10 minutes.
+This guide gets you from zero to a working agent that makes a paid x402 API request and exposes its own paid endpoint — all in under 10 minutes. We'll use [Base MCP](/ai-agents/skills/wallets/base-mcp), the official Base Account MCP server.
 
 ## Mock Demo
 
 <PaymentsQuickstartDemo />
 
-
-## Install OpenClaw
+## Install Base MCP
 
 <Steps>
-  <Step title="Install the CLI">
-    **macOS / Linux:**
+  <Step title="Add Base MCP to your client">
+    Edit your client's MCP config (Claude Desktop is shown — Cursor, Claude Code, and Codex use the same package).
 
-    ```bash Terminal
-    curl -fsSL https://openclaw.ai/install.sh | bash
-    ```
+    **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+    **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+    **Linux:** `~/.config/Claude/claude_desktop_config.json`
 
-    **Windows (PowerShell):**
-
-    ```powershell Terminal
-    iwr -useb https://openclaw.ai/install.ps1 | iex
-    ```
-
-    Verify the installation:
-
-    ```bash Terminal
-    openclaw --version
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "base-mcp": {
+          "command": "npx",
+          "args": ["-y", "@base-org/account-mcp@latest"]
+        }
+      }
+    }
     ```
   </Step>
 
-  <Step title="Run onboarding">
-    ```bash Terminal
-    openclaw onboard --install-daemon
-    ```
-
-    Follow the prompts to connect your LLM provider and set up your wallet plugin.
+  <Step title="Restart your client">
+    Restart Claude Desktop (or your MCP client). Base MCP now appears in the available tool list.
   </Step>
 
-  <Step title="Start the gateway">
-    ```bash Terminal
-    openclaw gateway --port 18789
+  <Step title="Connect a Base Account">
+    Ask your agent:
+
+    ```text Prompt
+    What's in my Base Account?
     ```
 
-    Open `http://127.0.0.1:18789/` to verify the gateway is live.
+    Base MCP opens a browser tab to connect a Base Account — no API keys, no seed phrase. Once connected, the agent runs `get_portfolio` and reports your balances.
   </Step>
 </Steps>
 
 <Tip>
-**Claude Code, Codex, and OpenCode users** — the wallet skills and x402 payment tools below are compatible with any skills-enabled AI coding tool. Run the same `npx skills add` commands and the capabilities work identically.
+**Claude Code, Codex, and Cursor users** — Base MCP works with any MCP client. Drop the same config into `~/.codex/config.toml` or `~/.cursor/mcp.json`.
 </Tip>
-
-## Configure a wallet
-
-Install the CDP Agentic Wallet skills:
-
-```bash Terminal
-npx skills add coinbase/agentic-wallet-skills
-```
-
-Then authenticate:
-
-```text
-Sign in to my wallet with your@email.com
-```
-
-Or use a [Sponge Wallet](https://www.paysponge.com) with native x402 support — see [wallet setup](/ai-agents/setup/wallet-setup) for all options.
 
 ## Make your first x402 payment
 
 Ask your agent to discover and call a paid API:
 
-```text
-Find a weather API and get the forecast for New York
+```text Prompt
+Find a weather API on the x402 Bazaar and get the forecast for New York
 ```
 
-The `search-for-service` and `pay-for-service` skills handle discovery, payment, and retries automatically. Your agent pays in USDC, gets the data, and returns the result — no API keys, no subscriptions.
+Your agent searches the [x402 Bazaar](https://www.x402.org/bazaar), calls the chosen endpoint, gets a `402`, and uses Base MCP's `send` tool to pay. Base MCP returns an `approvalUrl`; the user signs once in their browser and the API response comes back.
 
-To make a direct x402 request with Sponge Wallet:
+For autonomous payments without per-call approval, give the agent a dedicated wallet with a [spend permission](/base-account/improve-ux/spend-permissions).
+
+<Tip>
+Prefer a CLI? [`awal`](https://docs.cdp.coinbase.com/agentic-wallet/) wraps the same x402 flow for CDP Agentic Wallet:
 
 ```bash Terminal
-curl -X POST "https://api.wallet.paysponge.com/api/x402/fetch" \
-  -H "Authorization: Bearer $SPONGE_API_KEY" \
-  -H "Sponge-Version: 0.2.1" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://api.example.com/paid-endpoint",
-    "method": "GET",
-    "preferred_chain": "base"
-  }'
+npx awal@latest x402 pay https://api.example.com/paid-endpoint
 ```
+</Tip>
 
 ## Gate your own endpoint with x402
 
-Ask your agent to expose a paid API:
+Add x402 payment gating to any Express endpoint:
 
-```text
-Set up a paid endpoint for my market data at $0.01 per request
+```bash Terminal
+npm install x402-express express
 ```
 
-The `monetize-service` skill (`npx skills add coinbase/agentic-wallet-skills`) configures the x402 gating and deploys the endpoint. Other agents can now discover and pay for your service automatically.
+```typescript TypeScript
+import express from "express";
+import { paymentMiddleware } from "x402-express";
 
-Or use `x402-express` for a custom server — see [Accepting payments](/ai-agents/payments/accepting-payments).
+const app = express();
+
+app.use(
+  paymentMiddleware(
+    "0xYourAgentWalletAddress",
+    {
+      "/api/data": { price: "$0.01", network: "base" },
+    }
+  )
+);
+
+app.get("/api/data", (req, res) => {
+  res.json({ data: "premium content" });
+});
+
+app.listen(3000);
+```
+
+The middleware returns `402` to unpaid callers and the CDP facilitator handles verification and settlement. See [Accepting payments](/ai-agents/transactions/accepting-payments) for `hono`, `next`, and the no-code `monetize-service` skill.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="x402 protocol" icon="bolt" href="/ai-agents/payments/pay-for-services-with-x402">
+  <Card title="x402 protocol" icon="bolt" href="/ai-agents/transactions/pay-for-services-with-x402">
     Deep dive into how x402 works, supported networks, and error handling.
   </Card>
 
-  <Card title="Accepting payments" icon="money-bill" href="/ai-agents/payments/accepting-payments">
-    Set up server-side x402 gating with OpenClaw skills or custom middleware.
+  <Card title="Accepting payments" icon="money-bill" href="/ai-agents/transactions/accepting-payments">
+    Set up server-side x402 gating with the `monetize-service` skill or custom middleware.
   </Card>
 
   <Card title="Wallet setup" icon="wallet" href="/ai-agents/setup/wallet-setup">
-    Configure Bankr, CDP, or Sponge for your agent.
+    Configure Base MCP or CDP Agentic Wallet for your agent.
   </Card>
 
   <Card title="Agent registration" icon="fingerprint" href="/ai-agents/setup/agent-registration">

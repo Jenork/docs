@@ -1,41 +1,51 @@
 ---
 title: "Overview"
-description: "Installable agent capabilities for wallets, payments, and trading on Base"
-keywords: ["agent skills", "Bankr", "CDP agentic wallet", "Sponge wallet", "x402 skills", "trading agent", "Base agent"]
+description: "Installable agent capabilities for wallets, payments, protocols, and data on Base"
+keywords: ["agent skills", "Base MCP skill", "CDP agentic wallet", "x402 skills", "Uniswap agent", "Morpho agent", "Base agent"]
 ---
 
-Skills are installable knowledge packs that give your AI agent specific onchain capabilities — a wallet, payment handling, market data access, or trade execution. Install a skill and your agent knows what to do without any custom integration code.
+Skills are installable knowledge packs that give your AI agent specific onchain capabilities — a wallet, payment handling, protocol interactions, or market data access. Install a skill and your agent knows what to do without any custom integration code.
 
-<CardGroup cols={3}>
-  <Card title="Bankr" icon="wallet" href="/ai-agents/skills/wallets/bankr">
-    Cross-chain wallet with built-in swaps, gas sponsorship, and token launching.
+## Wallets
+
+<CardGroup cols={2}>
+  <Card title="Base MCP" icon="wallet" href="/ai-agents/skills/wallets/base-mcp">
+    Official MCP server for the Base Account. `send`, `swap`, `sign`, and `send_calls` for arbitrary EIP-5792 contract interactions.
   </Card>
 
   <Card title="CDP Agentic Wallet" icon="coins" href="/ai-agents/skills/wallets/cdp-agentic-wallet">
     Email-authenticated wallet on Base with x402 payment skills bundled in.
   </Card>
+</CardGroup>
 
-  <Card title="Sponge Wallet" icon="globe" href="/ai-agents/skills/wallets/sponge-wallet">
-    Multi-chain wallet with native x402 proxy, swaps, bridges, and banking.
-  </Card>
+## Payments
 
+<CardGroup cols={2}>
   <Card title="CDP Payment Skills" icon="bolt" href="/ai-agents/skills/payments/cdp-payment-skills">
-    Discover, pay for, and monetize x402 API services via CDP Agentic Wallet.
+    Discover, pay for, and monetize x402 API services via the CDP Agentic Wallet.
+  </Card>
+</CardGroup>
+
+## Protocol interactions
+
+<CardGroup cols={2}>
+  <Card title="Uniswap" icon="arrows-rotate" href="/ai-agents/skills/protocol-interactions/uniswap">
+    Get Universal Router calldata and submit swaps via Base MCP `send_calls`.
   </Card>
 
-  <Card title="Sponge x402" icon="arrow-right-arrow-left" href="/ai-agents/skills/payments/sponge-x402">
-    Sponge's built-in x402 proxy — discover and pay for services automatically.
+  <Card title="Morpho" icon="vault" href="/ai-agents/skills/protocol-interactions/morpho">
+    Deposit into ERC-4626 vaults and borrow on Morpho Blue markets.
   </Card>
+</CardGroup>
 
+## Data
+
+<CardGroup cols={2}>
   <Card title="CoinGecko" icon="chart-line" href="/ai-agents/skills/trading/coingecko">
     Price feeds, market cap, and OHLCV data via x402 — no API key required.
   </Card>
 
   <Card title="Alchemy Agentic Gateway" icon="database" href="/ai-agents/skills/trading/alchemy-agentic-gateway">
     Token balances, NFT metadata, portfolio data, and prices via x402 SIWE auth.
-  </Card>
-
-  <Card title="Swap Execution" icon="arrows-rotate" href="/ai-agents/skills/trading/swap-execution">
-    Execute token swaps using wallet-native skills across Bankr, CDP, and Sponge.
   </Card>
 </CardGroup>

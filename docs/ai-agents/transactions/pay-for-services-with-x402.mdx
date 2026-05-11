@@ -1,0 +1,126 @@
+---
+title: "Pay for APIs & Services (x402)"
+description: "How x402 works, how your agent makes payments, and which networks and tokens are supported"
+keywords: ["x402 protocol", "autonomous agent payments", "machine payments protocol", "programmatic payments", "AI agent payments", "agentic payments", "HTTP 402 payment required", "x402 Base"]
+---
+
+import { X402PayDemo } from "/snippets/x402PayDemo.jsx"
+
+x402 is a payment protocol built on HTTP status code `402 Payment Required` — a code in the HTTP spec since the 1990s, finally put to use. It lets agents pay for API access with stablecoins per-request, with no subscriptions or API keys required.
+
+## Mock Demo
+
+<X402PayDemo/>
+
+## Payment flow
+
+<Steps>
+  <Step title="Your agent makes a request">
+    Your agent sends a standard HTTP request to an API endpoint, just like any other API call.
+  </Step>
+
+  <Step title="The server responds with 402 Payment Required">
+    Instead of returning data, the server responds with a `402` status code and includes payment requirements in the `PAYMENT-REQUIRED` header: how much it costs, which token, and on which network.
+  </Step>
+
+  <Step title="Your agent pays">
+    Your agent's wallet constructs a signed payment payload and resubmits the request with a `PAYMENT-SIGNATURE` header. No human approval needed when the wallet has a pre-authorized spend permission.
+  </Step>
+
+  <Step title="The server delivers the data">
+    The server verifies the payment via a facilitator, settles onchain, and returns the requested data. The entire flow takes seconds.
+  </Step>
+</Steps>
+
+Any agent with a funded wallet can pay for any x402-enabled API — no pre-existing relationship or account required.
+
+[Learn more about x402 →](https://docs.cdp.coinbase.com/x402/docs/client-server-model)
+
+## Making x402 requests
+
+### Base MCP
+
+[Base MCP](/ai-agents/skills/wallets/base-mcp) handles x402 requests through the same `send` flow used for normal payments — it detects the `402` response, signs the payment payload, and retries automatically.
+
+```text Prompt
+Find a weather API and get the forecast for New York
+```
+
+The agent searches the [x402 Bazaar](https://www.x402.org/bazaar) for matching services, calls the chosen endpoint, and pays from the connected Base Account. For autonomous payments without a per-call approval, give the agent a dedicated wallet with a [spend permission](/base-account/improve-ux/spend-permissions).
+
+### CDP Agentic Wallet
+
+The [CDP Agentic Wallet](https://docs.cdp.coinbase.com/agentic-wallet/) skills include `search-for-service` and `pay-for-service`, which work identically once installed:
+
+```bash Terminal
+npx skills add coinbase/agentic-wallet-skills
+```
+
+```bash Terminal
+npx awal@latest x402 bazaar search "weather forecast"
+npx awal@latest x402 pay https://example.com/api/weather \
+  -X POST \
+  -d '{"query": "New York"}'
+```
+
+Or prompt directly:
+
+```text Prompt
+Find APIs for sentiment analysis
+Call that weather API and get the forecast for New York
+```
+
+[CDP Agentic Wallet skills →](https://docs.cdp.coinbase.com/agentic-wallet/skills)
+
+### Custom client with `x402-axios`
+
+For a custom integration without an MCP server:
+
+```bash Terminal
+npm install x402-axios axios
+```
+
+```typescript TypeScript
+import { withPaymentInterceptor } from "x402-axios";
+import axios from "axios";
+
+const client = withPaymentInterceptor(axios.create(), walletClient);
+
+const response = await client.get(
+  "https://api.example.com/paid-endpoint"
+);
+```
+
+The interceptor handles the full `402 → pay → retry` cycle. `walletClient` is any viem-compatible wallet — pair it with [spend permissions](/base-account/improve-ux/spend-permissions) so the agent can pay autonomously.
+
+## Error handling and retries
+
+| Status | Meaning | What to do |
+|--------|---------|------------|
+| `402` | Payment required | Parse `PAYMENT-REQUIRED` header and pay |
+| `402` with `X-Payment-Error` | Payment rejected | Check wallet balance and token approval |
+| `408` | Payment timeout | Retry with same or higher payment |
+| `429` | Rate limit | Back off and retry after the indicated delay |
+
+Base MCP and the CDP Agentic Wallet `pay-for-service` skill handle retries automatically. If you're building a custom client, parse the `PAYMENT-REQUIRED` header, construct the signed payload, and retry with the `PAYMENT-SIGNATURE` header.
+
+## Video Tutorial
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/b5Wx2NAeY2E?si=r1FumIsbGt6nAt29"
+  title="Payments and transactions for agents"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Accepting payments" icon="money-bill" href="/ai-agents/transactions/accepting-payments">
+    Gate your own endpoints and charge other agents per request.
+  </Card>
+
+  <Card title="x402 client-server model" icon="file-contract" href="https://docs.cdp.coinbase.com/x402/docs/client-server-model">
+    Facilitator endpoints and protocol addresses.
+  </Card>
+</CardGroup>

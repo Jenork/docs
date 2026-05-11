@@ -1,0 +1,107 @@
+---
+title: "Send & Swap"
+description: "Use Base MCP to send tokens and swap on Base from your AI agent"
+keywords: ["agent send tokens", "agent swap Base", "Base MCP send", "Base MCP swap", "ENS basename agent", "approvalUrl"]
+---
+
+[Base MCP](/ai-agents/skills/wallets/base-mcp) gives your agent two high-level tools that cover most everyday transfers and trades: `send` and `swap`. Both return an `approvalUrl` and a `requestId`; the user signs in their Base Account and your agent polls `get_request_status` for the result.
+
+## `send`
+
+Send native ETH, USDC, or any ERC-20 to a wallet address, ENS name, or basename.
+
+```text Prompt
+Send 10 USDC to vitalik.base.eth on Base
+```
+
+The agent calls `send` with:
+
+```json send arguments
+{
+  "to": "vitalik.base.eth",
+  "asset": "USDC",
+  "amount": "10",
+  "chainId": 8453
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `to` | Recipient — `0x...`, ENS, or basename |
+| `asset` | Symbol (`ETH`, `USDC`) or ERC-20 contract address |
+| `amount` | Decimal amount in the asset's units (`"10"` = 10 USDC) |
+| `chainId` | EIP-155 chain ID (`8453` for Base) |
+
+For an arbitrary ERC-20, pass the contract address as `asset`. The agent can resolve a symbol with `search_tokens` first if it doesn't know the contract.
+
+## `swap`
+
+Swap one asset for another at the best available route. Base MCP handles routing — you don't need to pick a DEX.
+
+```text Prompt
+Swap 50 USDC for ETH on Base
+```
+
+```json swap arguments
+{
+  "from": "USDC",
+  "to": "ETH",
+  "amount": "50",
+  "chainId": 8453,
+  "slippageBps": 50
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `from` / `to` | Symbol or ERC-20 contract address |
+| `amount` | Decimal amount of the **input** asset |
+| `chainId` | EIP-155 chain ID |
+| `slippageBps` | Optional max slippage in basis points (default `50` = 0.5%) |
+
+For protocol-specific behavior — exact output swaps, custom routes, multi-hop on a specific DEX — use [`send_calls`](/ai-agents/transactions/protocol-interactions) directly with calldata from Uniswap or another router.
+
+## Polling for confirmation
+
+Both tools return immediately with a pending status:
+
+```json Response
+{
+  "requestId": "req_01HZ...",
+  "approvalUrl": "https://base.account/approve?req=...",
+  "status": "pending"
+}
+```
+
+After the user signs in their browser, your agent polls `get_request_status`:
+
+```json get_request_status response
+{
+  "requestId": "req_01HZ...",
+  "status": "confirmed",
+  "txHash": "0x...",
+  "blockNumber": 18234567
+}
+```
+
+| Status | Meaning |
+|--------|---------|
+| `pending` | Waiting on the user to open `approvalUrl` |
+| `submitted` | Signed and broadcast; not yet included |
+| `confirmed` | Included in a block |
+| `failed` | Reverted or rejected |
+
+## Skipping per-transaction approvals
+
+For background agents (autonomous trading, recurring transfers), connect a dedicated **agent wallet** with [spend permissions](/base-account/improve-ux/spend-permissions). Once the user authorizes the agent wallet up to a per-period cap, `send` and `swap` settle without an `approvalUrl`. See the [agent wallet section in Base MCP](/ai-agents/skills/wallets/base-mcp#approval-flow).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Protocol interactions" icon="arrows-rotate" href="/ai-agents/transactions/protocol-interactions">
+    Use `send_calls` to interact with any DeFi protocol on Base.
+  </Card>
+  <Card title="Pay for services (x402)" icon="bolt" href="/ai-agents/transactions/pay-for-services-with-x402">
+    Pay for APIs and data feeds per request with stablecoins.
+  </Card>
+</CardGroup>

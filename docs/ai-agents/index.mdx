@@ -1,13 +1,12 @@
 ---
 title: "AI Agents on Base"
 description: "Build AI agents that trade, earn, and transact autonomously on Base"
-keywords: ["AI agents Base", "x402 protocol", "onchain agents", "Base L2", "Build with AI", "OpenClaw", "trading agent", "payment agent"]
+keywords: ["AI agents Base", "x402 protocol", "onchain agents", "Base L2", "Build with AI", "Base MCP", "trading agent", "payment agent"]
 ---
 
 import { AgentPaymentDemo } from "/snippets/AgentPaymentDemo.jsx"
 
 Base gives your AI agent the tools to operate as an independent economic actor: a wallet to hold and spend funds, identity standards so other agents and services can trust it, and payment protocols for services and commerce.
-
 
 ## Mock Demo
 
@@ -20,12 +19,12 @@ Here's how the agent you can build from these guides operates end-to-end — fro
 ```mermaid
 sequenceDiagram
     participant Agent
-    participant Wallet as Agent Wallet
+    participant Wallet as Base Account (via Base MCP)
     participant Registry as Identity Registry
     participant API as Paid API
     participant Facilitator as x402 Facilitator
 
-    Agent->>Wallet: Set up wallet (Bankr / CDP / Sponge)
+    Agent->>Wallet: Connect Base Account via Base MCP
     Wallet-->>Agent: Address + signing capability
 
     Agent->>Registry: Register identity (ERC-8004 + Basename)
@@ -47,19 +46,18 @@ sequenceDiagram
 The AI agents section covers the full stack for building an autonomous onchain agent:
 
 - **[Quickstarts](/ai-agents/quickstart/payments)** — End-to-end walkthroughs to get a working agent running in minutes. Start here if you're new.
-- **[Setup](/ai-agents/setup/wallet-setup)** — Give your agent a wallet and a registered onchain identity. Wallets let it hold funds and authorize transactions; registration lets other agents and services verify who they're dealing with.
-- **[Payments](/ai-agents/payments/pay-for-services-with-x402)** — Use x402 to pay for API access per-request in stablecoins, with no subscriptions or API keys required. Or gate your own endpoints to charge other agents.
-- **[Trading](/ai-agents/trading/data-fetching)** — Fetch live market data and execute token swaps on Base.
-- **[Skills](/ai-agents/skills)** — Installable knowledge packs that give your AI coding assistant deep context on Base APIs, tooling, and migration paths.
+- **[Setup](/ai-agents/setup/wallet-setup)** — Give your agent a wallet via [Base MCP](/ai-agents/skills/wallets/base-mcp) and a registered onchain identity. The wallet lets it hold funds and authorize transactions; registration lets other agents and services verify who they're dealing with.
+- **[Transactions](/ai-agents/transactions/send-swap)** — Send tokens, swap, pay for x402 services, accept payments, and execute arbitrary protocol calls via `send_calls`.
+- **[Skills](/ai-agents/skills)** — Installable knowledge packs that give your AI coding assistant deep context on Base APIs, protocols, and tooling.
 
 ## Choose your path
 
 <CardGroup cols={2}>
-  <Card title="Accept & make payments" icon="bolt" href="/ai-agents/quickstart/payments">
+  <Card title="Pay for & accept services" icon="bolt" href="/ai-agents/quickstart/payments">
     Build an agent that pays for API access with stablecoins and charges other agents for your services. Get running in under 10 minutes.
   </Card>
 
   <Card title="Build a trading agent" icon="chart-line" href="/ai-agents/quickstart/trading">
-    Build an agent that fetches live market data and executes token swaps automatically on Base.
+    Build an agent that swaps tokens on Uniswap, deposits into Morpho, and executes any DeFi protocol on Base.
   </Card>
 </CardGroup>

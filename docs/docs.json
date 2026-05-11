@@ -694,17 +694,12 @@
             ]
           },
           {
-            "group": "Payments",
+            "group": "Transactions",
             "pages": [
-              "ai-agents/payments/pay-for-services-with-x402",
-              "ai-agents/payments/accepting-payments"
-            ]
-          },
-          {
-            "group": "Trading",
-            "pages": [
-              "ai-agents/trading/data-fetching",
-              "ai-agents/trading/trade-execution"
+              "ai-agents/transactions/send-swap",
+              "ai-agents/transactions/pay-for-services-with-x402",
+              "ai-agents/transactions/accepting-payments",
+              "ai-agents/transactions/protocol-interactions"
             ]
           },
           {
@@ -714,24 +709,28 @@
               {
                 "group": "Wallets",
                 "pages": [
-                  "ai-agents/skills/wallets/bankr",
-                  "ai-agents/skills/wallets/cdp-agentic-wallet",
-                  "ai-agents/skills/wallets/sponge-wallet"
+                  "ai-agents/skills/wallets/base-mcp",
+                  "ai-agents/skills/wallets/cdp-agentic-wallet"
                 ]
               },
               {
                 "group": "Payments",
                 "pages": [
-                  "ai-agents/skills/payments/cdp-payment-skills",
-                  "ai-agents/skills/payments/sponge-x402"
+                  "ai-agents/skills/payments/cdp-payment-skills"
                 ]
               },
               {
-                "group": "Trading",
+                "group": "Protocol Interactions",
+                "pages": [
+                  "ai-agents/skills/protocol-interactions/uniswap",
+                  "ai-agents/skills/protocol-interactions/morpho"
+                ]
+              },
+              {
+                "group": "Data",
                 "pages": [
                   "ai-agents/skills/trading/coingecko",
-                  "ai-agents/skills/trading/alchemy-agentic-gateway",
-                  "ai-agents/skills/trading/swap-execution"
+                  "ai-agents/skills/trading/alchemy-agentic-gateway"
                 ]
               }
             ]
@@ -3002,7 +3001,7 @@
     },
     {
       "source": "/ai-agents/core-concepts/payments-and-transactions",
-      "destination": "/ai-agents/payments/pay-for-services-with-x402"
+      "destination": "/ai-agents/transactions/pay-for-services-with-x402"
     },
     {
       "source": "/ai-agents/core-concepts/identity-verification-auth",
@@ -3014,7 +3013,39 @@
     },
     {
       "source": "/ai-agents/trading",
-      "destination": "/ai-agents/trading/trade-execution"
+      "destination": "/ai-agents/transactions/protocol-interactions"
+    },
+    {
+      "source": "/ai-agents/trading/data-fetching",
+      "destination": "/ai-agents/skills/trading/coingecko"
+    },
+    {
+      "source": "/ai-agents/trading/trade-execution",
+      "destination": "/ai-agents/transactions/protocol-interactions"
+    },
+    {
+      "source": "/ai-agents/payments/pay-for-services-with-x402",
+      "destination": "/ai-agents/transactions/pay-for-services-with-x402"
+    },
+    {
+      "source": "/ai-agents/payments/accepting-payments",
+      "destination": "/ai-agents/transactions/accepting-payments"
+    },
+    {
+      "source": "/ai-agents/skills/wallets/bankr",
+      "destination": "/ai-agents/skills/wallets/base-mcp"
+    },
+    {
+      "source": "/ai-agents/skills/wallets/sponge-wallet",
+      "destination": "/ai-agents/skills/wallets/base-mcp"
+    },
+    {
+      "source": "/ai-agents/skills/payments/sponge-x402",
+      "destination": "/ai-agents/transactions/pay-for-services-with-x402"
+    },
+    {
+      "source": "/ai-agents/skills/trading/swap-execution",
+      "destination": "/ai-agents/skills/protocol-interactions/uniswap"
     },
     {
       "source": "/ai-agents/introduction/choosing-a-framework",
@@ -3042,11 +3073,11 @@
     },
     {
       "source": "/ai-agents/guides/x402-payments",
-      "destination": "/ai-agents/payments/x402-protocol"
+      "destination": "/ai-agents/transactions/pay-for-services-with-x402"
     },
     {
       "source": "/ai-agents/guides/trading",
-      "destination": "/ai-agents/trading/trade-execution"
+      "destination": "/ai-agents/transactions/protocol-interactions"
     },
     {
       "source": "/ai-agents/guides/identity-siwa",

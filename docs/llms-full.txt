@@ -370,24 +370,23 @@ const client = createPublicClient({ chain: base, transport: http() })
 
 ## AI Agents
 - [AI Agents on Base](https://docs.base.org/ai-agents/index): Build AI agents that trade, earn, and transact autonomously on Base
-- [Overview](https://docs.base.org/ai-agents/skills/index): Installable agent capabilities for wallets, payments, and trading on Base
-- [Accepting Payments (x402)](https://docs.base.org/ai-agents/payments/accepting-payments): Gate your agent's endpoints with x402 to charge other agents per request
-- [Pay for APIs & Services (x402)](https://docs.base.org/ai-agents/payments/pay-for-services-with-x402): How x402 works, how your agent makes payments, and which networks and tokens are supported
+- [Overview](https://docs.base.org/ai-agents/skills/index): Installable agent capabilities for wallets, payments, protocols, and data on Base
 - [Get Started with Payments](https://docs.base.org/ai-agents/quickstart/payments): Build an agent that makes and accepts x402 payments on Base in under 10 minutes
-- [Get Started with Trading](https://docs.base.org/ai-agents/quickstart/trading): Build an agent that fetches live market data and executes token swaps on Base
+- [Get Started with DeFi Trading](https://docs.base.org/ai-agents/quickstart/trading): Build an agent that swaps tokens on Uniswap and interacts with any DeFi protocol on Base
 - [Builder Codes for Agents](https://docs.base.org/ai-agents/setup/agent-builder-codes): Register your agent on Base.dev and append a Builder Code to every transaction to measure onchain activity.
 - [Agent Registration & Identity](https://docs.base.org/ai-agents/setup/agent-registration): Register your agent's identity onchain, get a Basename, and authenticate with services using Sign In With Agent (SIWA)
-- [Wallet Setup for Agents](https://docs.base.org/ai-agents/setup/wallet-setup): Give your AI agent a dedicated wallet on Base to hold funds, send payments, sign messages, and interact with onchain protocols securely.
+- [Wallet Setup for Agents](https://docs.base.org/ai-agents/setup/wallet-setup): Give your AI agent a Base Account wallet via Base MCP — hold funds, send payments, sign messages, and interact with onchain protocols securely.
 - [CDP Payment Skills](https://docs.base.org/ai-agents/skills/payments/cdp-payment-skills): Skills for discovering, paying for, and monetizing x402 API services via the CDP Agentic Wallet
-- [Sponge x402](https://docs.base.org/ai-agents/skills/payments/sponge-x402): Skill for discovering and paying for x402 services automatically using Sponge Wallet's built-in proxy
+- [Morpho](https://docs.base.org/ai-agents/skills/protocol-interactions/morpho): Deposit and withdraw from Morpho vaults on Base from your agent via Base MCP send_calls
+- [Uniswap](https://docs.base.org/ai-agents/skills/protocol-interactions/uniswap): Get Uniswap Universal Router calldata and execute swaps from your agent via Base MCP send_calls
 - [Alchemy Agentic Gateway](https://docs.base.org/ai-agents/skills/trading/alchemy-agentic-gateway): Skill for accessing Alchemy's blockchain APIs — token balances, NFTs, portfolio data, and prices — via x402 SIWE auth
 - [CoinGecko](https://docs.base.org/ai-agents/skills/trading/coingecko): Skill for fetching live crypto price feeds, market cap, and OHLCV data via x402 — no API key required
-- [Swap Execution](https://docs.base.org/ai-agents/skills/trading/swap-execution): Skills for executing token swaps on Base using wallet-native tools across Bankr, CDP Agentic Wallet, and Sponge
-- [Bankr](https://docs.base.org/ai-agents/skills/wallets/bankr): Skill that gives your AI agent a cross-chain wallet with built-in swaps, gas sponsorship, and token launching
+- [Base MCP](https://docs.base.org/ai-agents/skills/wallets/base-mcp): Official MCP server that gives your agent a Base Account wallet with send, swap, sign, and arbitrary EIP-5792 contract calls
 - [CDP Agentic Wallet](https://docs.base.org/ai-agents/skills/wallets/cdp-agentic-wallet): Skill that gives your AI agent an email-authenticated wallet on Base with x402 payments built in
-- [Sponge Wallet](https://docs.base.org/ai-agents/skills/wallets/sponge-wallet): Skill that gives your AI agent a multi-chain wallet with native x402 payments, swaps, bridges, and banking
-- [Fetching Market Data](https://docs.base.org/ai-agents/trading/data-fetching): Use x402 to access live market data from CoinGecko, Alchemy, and other sources — no API key management required
-- [Trade Execution on Base](https://docs.base.org/ai-agents/trading/trade-execution): Base-specific patterns, fee calibration, and onchain signals for trading agents
+- [Accepting Payments (x402)](https://docs.base.org/ai-agents/transactions/accepting-payments): Gate your agent's endpoints with x402 to charge other agents per request
+- [Pay for APIs & Services (x402)](https://docs.base.org/ai-agents/transactions/pay-for-services-with-x402): How x402 works, how your agent makes payments, and which networks and tokens are supported
+- [Protocol Interactions (send_calls)](https://docs.base.org/ai-agents/transactions/protocol-interactions): Use Base MCP send_calls to execute arbitrary DeFi protocol calls — Uniswap, Morpho, lending, staking — from your agent
+- [Send & Swap](https://docs.base.org/ai-agents/transactions/send-swap): Use Base MCP to send tokens and swap on Base from your AI agent
 
 ## Apps
 - [Build an app on Base](https://docs.base.org/apps/index): A step-by-step guide to building a Next.js tally app on Base using wagmi and viem, with wallet connection, contract reads and writes, and batch transaction support.

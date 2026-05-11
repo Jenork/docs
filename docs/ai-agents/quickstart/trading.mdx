@@ -1,102 +1,135 @@
 ---
-title: "Get Started with Trading"
-description: "Build an agent that fetches live market data and executes token swaps on Base"
-keywords: ["trading agent quickstart", "OpenClaw trading", "Base trading agent", "token swap agent", "x402 market data"]
+title: "Get Started with DeFi Trading"
+description: "Build an agent that swaps tokens on Uniswap and interacts with any DeFi protocol on Base"
+keywords: ["trading agent quickstart", "Base MCP trading", "Base trading agent", "Uniswap agent", "send_calls Uniswap"]
 ---
 
 import { TradingQuickstartDemo } from "/snippets/TradingQuickstartDemo.jsx"
 
-This guide gets you from zero to a working agent that fetches live price data via x402 and executes a token swap on Base.
+This guide gets you from zero to a working agent that swaps tokens on Uniswap and can extend to any DeFi protocol on Base — Morpho, Aave, NFT marketplaces — through a single primitive: [Base MCP's `send_calls`](/ai-agents/skills/wallets/base-mcp).
 
 ## Mock Demo
 
 <TradingQuickstartDemo />
 
+## Install Base MCP
 
-## Install OpenClaw
+Add Base MCP to your client's MCP config (Claude Desktop shown — Cursor, Claude Code, and Codex are identical):
+
+```json claude_desktop_config.json
+{
+  "mcpServers": {
+    "base-mcp": {
+      "command": "npx",
+      "args": ["-y", "@base-org/account-mcp@latest"]
+    }
+  }
+}
+```
+
+Restart your client. On first use, Base MCP opens a browser tab to connect a Base Account — no API keys, no seed phrase.
+
+## Check your portfolio
+
+```text Prompt
+What's in my Base Account?
+```
+
+The agent calls `get_portfolio` and reports balances across networks. Use `search_tokens` if you need to resolve a symbol to a contract address:
+
+```text Prompt
+Find the contract address for AERO on Base
+```
+
+## Execute a simple swap
+
+For everyday trades, Base MCP's `swap` tool routes through the best available DEX:
+
+```text Prompt
+Swap 50 USDC for ETH on Base with 0.5% slippage
+```
+
+Base MCP returns a `requestId` and `approvalUrl`. The user signs in their Base Account, and the agent polls `get_request_status` until `confirmed`.
+
+## Execute a Uniswap swap with custom routing
+
+When you need a specific route or protocol, fetch calldata from Uniswap's [Routing API](https://docs.uniswap.org/api/quote/overview) and submit it via `send_calls`:
 
 <Steps>
-  <Step title="Install the CLI">
-    **macOS / Linux:**
-
+  <Step title="Get a quote from Uniswap">
     ```bash Terminal
-    curl -fsSL https://openclaw.ai/install.sh | bash
+    curl -X POST "https://trade-api.gateway.uniswap.org/v1/quote" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "tokenInChainId": 8453,
+        "tokenOutChainId": 8453,
+        "tokenIn": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "tokenOut": "NATIVE",
+        "amount": "50000000",
+        "type": "EXACT_INPUT",
+        "swapper": "0xYourAgentWalletAddress"
+      }'
     ```
 
-    **Windows (PowerShell):**
+    The response contains `quote.tx.to`, `quote.tx.data`, and `quote.tx.value` — a fully encoded swap transaction.
+  </Step>
 
-    ```powershell Terminal
-    iwr -useb https://openclaw.ai/install.ps1 | iex
+  <Step title="Submit via send_calls">
+    Have your agent build a two-call batch: `approve` USDC for the Universal Router, then the router's `execute`:
+
+    ```text Prompt
+    Submit this Uniswap swap via send_calls with an approve + execute batch:
+    <paste quote.tx>
     ```
 
-    Verify:
+    The agent constructs:
 
-    ```bash Terminal
-    openclaw --version
+    ```json send_calls payload
+    {
+      "chainId": 8453,
+      "calls": [
+        { "to": "<USDC>", "data": "<approveData>", "value": "0x0" },
+        { "to": "<UniversalRouter>", "data": "<quote.tx.data>", "value": "<quote.tx.value>" }
+      ],
+      "atomicRequired": true
+    }
     ```
   </Step>
 
-  <Step title="Run onboarding">
-    ```bash Terminal
-    openclaw onboard --install-daemon
-    ```
-  </Step>
-
-  <Step title="Start the gateway">
-    ```bash Terminal
-    openclaw gateway --port 18789
-    ```
+  <Step title="Approve and confirm">
+    Base MCP returns an `approvalUrl`. The user signs in their Base Account, and `get_request_status` reports `confirmed` with the tx hash. Both calls land atomically — if the swap reverts, the approval is rolled back.
   </Step>
 </Steps>
 
-<Tip>
-**Claude Code, Codex, and OpenCode users** — the wallet and trading skills below are compatible with any skills-enabled AI coding tool. Run the same `npx skills add` commands from within your tool.
-</Tip>
+See the full [Uniswap protocol guide](/ai-agents/skills/protocol-interactions/uniswap) for slippage, deadlines, and error handling.
 
-## Configure a trading wallet
+## Extend to any protocol
 
-Bankr provides cross-chain wallet access with gas sponsorship and built-in swap support — ideal for trading agents:
+`send_calls` accepts arbitrary `to` + `data` + `value` calls. That's the primitive you need to extend your agent to any contract on Base:
 
-```text
-install the bankr skill from https://github.com/BankrBot/skills
-```
-
-Create a dedicated account at [bankr.bot](https://bankr.bot) and generate an API key at [bankr.bot/api](https://bankr.bot/api).
-
-For [CDP Agentic Wallet](https://docs.cdp.coinbase.com/agentic-wallet/) or [Sponge Wallet](https://www.paysponge.com), see [wallet setup](/ai-agents/setup/wallet-setup).
-
-## Execute a swap
-
-Ask your agent to execute a trade using wallet-native tools:
-
-```text
-Buy $50 of ETH on Base
-```
-
-With Bankr or CDP Agentic Wallet, built-in swap tools handle the trade — no external DEX integration needed. The wallet constructs, signs, and broadcasts the transaction.
-
-For best execution on Base, use the preconf endpoint to simulate before signing:
-
-```text
-Simulate buying $50 of ETH then execute if the price impact is below 1%
-```
+| Protocol | Pattern |
+|----------|---------|
+| **Morpho vaults** | `approve` + `deposit(assets, receiver)` — see the [Morpho guide](/ai-agents/skills/protocol-interactions/morpho) |
+| **NFT mint** | call the mint function with the right `value` |
+| **Governance vote** | call `castVote(proposalId, support)` on the Governor |
+| **Lending** | `approve` + `supply` on Aave, Spark, or Moonwell |
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Data fetching" icon="database" href="/ai-agents/trading/data-fetching">
-    Full catalog of x402 data sources for trading agents.
+  <Card title="Send & swap" icon="arrows-rotate" href="/ai-agents/transactions/send-swap">
+    Full reference for `send`, `swap`, and `get_request_status`.
   </Card>
 
-  <Card title="Trade execution" icon="chart-line" href="/ai-agents/trading/trade-execution">
-    Flashblocks timing, fee calibration, and failure modes on Base.
+  <Card title="Protocol interactions" icon="code" href="/ai-agents/transactions/protocol-interactions">
+    The `send_calls` pattern in depth — calldata, atomicity, error handling.
   </Card>
 
-  <Card title="Wallet setup" icon="wallet" href="/ai-agents/setup/wallet-setup">
-    Configure Bankr, CDP, or Sponge for your agent.
+  <Card title="Uniswap on Base" icon="chart-line" href="/ai-agents/skills/protocol-interactions/uniswap">
+    Quote API, Universal Router calldata, and submission via Base MCP.
   </Card>
 
-  <Card title="x402 protocol" icon="bolt" href="/ai-agents/payments/pay-for-services-with-x402">
-    How x402 works for data fetching and payments.
+  <Card title="Morpho on Base" icon="vault" href="/ai-agents/skills/protocol-interactions/morpho">
+    Pick a vault, build deposit calldata, submit via `send_calls`.
   </Card>
 </CardGroup>
